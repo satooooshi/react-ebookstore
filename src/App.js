@@ -20,6 +20,8 @@ import { CardDeck } from 'react-bootstrap';
 
 import Appa from './components/CheckoutForm/App'
 
+import axios from 'axios';
+
 
   const App = () => {
     const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -97,16 +99,16 @@ import Appa from './components/CheckoutForm/App'
 
 
     /*---------------------------------------------------------------- */
-    const fetchProductsData = () => {
+    const fetchProductsLocalData = () => {
       setProducts(getProducts());
     };
 
-    const fetchCartData = () => {
+    const fetchCartLocalData = () => {
       setCart(getCart());
     };
 
     
-    const handleAddToCartData = (productId, quantity) => {
+    const handleAddToCartLocalData = (productId, quantity) => {
 
       let newCart=JSON.parse(JSON.stringify(getCart()));// deep copy
       let prod=JSON.parse(JSON.stringify(getProductById(productId)));// deep copy
@@ -130,10 +132,10 @@ import Appa from './components/CheckoutForm/App'
     };
   
     // at least one lineItemId item in cart
-    const handleUpdateCartQtyData = (lineItemId, quantity) => {
+    const handleUpdateCartQtyLocalData = (lineItemId, quantity) => {
 
       if(quantity<=0){
-        handleRemoveFromCartData(lineItemId);
+        handleRemoveFromCartLocalData(lineItemId);
         return ;
       }
 
@@ -165,7 +167,7 @@ import Appa from './components/CheckoutForm/App'
 
     };
 
-    const handleRemoveFromCartData = (lineItemId) => {
+    const handleRemoveFromCartLocalData = (lineItemId) => {
       let cartData = JSON.parse(JSON.stringify(getCart()));// deep copy
       let lineItemsData=cartData.line_items;
       lineItemsData = lineItemsData.filter(
@@ -183,7 +185,7 @@ import Appa from './components/CheckoutForm/App'
       }
       subtotalraw+=item.line_total
       console.log(item.line_total)
-      total_items+=item.quantity
+      total_items=parseInt(total_items)+parseInt(item.quantity)
       total_unique_items++
     })
     cartData.total_items=total_items
@@ -195,7 +197,7 @@ import Appa from './components/CheckoutForm/App'
       setCart(addCart(cartData));
     };
 
-    const handleEmptyCartData = () => {
+    const handleEmptyCartLocalData = () => {
       let cartData = JSON.parse(JSON.stringify(getCart()));
       cartData.total_items=0
       cartData.total_unique_items=0
@@ -205,9 +207,87 @@ import Appa from './components/CheckoutForm/App'
       console.log(addCart(cartData));
     };
   
-    const refreshCartData = () => {
+    const refreshCartLocalData = () => {
       let cartData = JSON.parse(JSON.stringify(getCart()));
       setCart(cartData);
+    };
+  
+    const handleCaptureCheckoutLocalData = (checkoutTokenId, newOrder) => {
+      try {
+        const incomingOrder=newOrder;
+        console.log('incomingorder-----------------------')
+        console.log(console.log(JSON.stringify(incomingOrder, null, 2)))
+        setOrder(incomingOrder)
+        refreshCartData();
+      } catch (error) {
+        setErrorMessage(error.data.error.message);
+      }
+    };
+
+    /*---------------------------------------------------------------- */
+
+    const fetchProductsData = () => {
+      axios.get(`http://localhost:3001/api/products`)
+      .then(res => {
+        console.log('axios fetch products')
+        console.log(res)
+        setProducts(res.data);
+      })
+    };
+
+    const fetchCartData = () => {
+      axios.get(`http://localhost:3001/api/cart`)
+      .then(res => {
+        console.log('axios fetch cart')
+        console.log(res)
+        setCart(res.data);
+      })
+    };
+
+    
+    const handleAddToCartData = (productId, quantity) => {
+
+      axios.get(`http://localhost:3001/api/cart/add/`+productId)
+      .then(res => {
+        console.log('axios cart add')
+        console.log(res)
+        setCart(res.data)
+        fetchCartData()
+      })
+
+    };
+  
+    // at least one lineItemId item in cart
+    const handleUpdateCartQtyData = (lineItemId, quantity) => {
+      axios.get(`http://localhost:3001/api/cart/update/`+lineItemId+'/'+quantity)
+      .then(res => {
+        console.log('axios cart update')
+        console.log(res)
+        setCart(res.data)
+        fetchCartData()
+      })
+    };
+
+    const handleRemoveFromCartData = (lineItemId) => {
+      axios.get(`http://localhost:3001/api/cart/remove/`+lineItemId)
+      .then(res => {
+        console.log('axios cart remove from cart')
+        console.log(res)
+        setCart(res.data);
+      })
+    };
+
+    const handleEmptyCartData = () => {
+      axios.get(`http://localhost:3001/api/cart/empty`)
+      .then(res => {
+        console.log('axios empty cart')
+        console.log(res)
+        setCart(res.data);
+      })
+    };
+  
+    const refreshCartData = () => {
+      fetchCartData()
     };
   
     const handleCaptureCheckoutData = (checkoutTokenId, newOrder) => {
@@ -222,8 +302,7 @@ import Appa from './components/CheckoutForm/App'
       }
     };
 
-    /*---------------------------------------------------------------- */
-
+    //-----------------------------------------------------------------
 
     const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
 
