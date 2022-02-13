@@ -155,7 +155,7 @@ https://nansystem.com/shallow-copy-vs-deep-copy/
 array slice for deep copy
 json const copiedObj = JSON.parse(JSON.stringify(obj)); for deep copy
 
-
+Spread Attributes
 https://yami-beta.hateblo.jp/entry/2016/09/06/112330
 React での「...」（ドット3つ）の記法
         <form onSubmit={methods.handleSubmit((data) => test({ ...data, shippingCountry, shippingSubdivision, shippingOption }))}>

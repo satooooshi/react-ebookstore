@@ -1211,6 +1211,44 @@ let cart = {
   },
   "discount": []
 };
+
+let addressFormData={
+  "firstName": "john",
+  "lastName": "smith",
+  "address1": "bunkyoku",
+  "email": "hahahah@qq.com",
+  "city": "tokyo",
+  "zip": "1234567",
+  "shippingCountry": "JP",
+  "shippingSubdivision": "IN-AN",
+  "shippingOption": "ship_DWy4oG8OM56Jx2"
+};
+
+let incomingOrder= {
+  "line_items": [],
+  "customer": {
+    "firstname": "john",
+    "lastname": "smith",
+    "email": "sato@qq.com"
+  },
+  "shipping": {
+    "name": "International",
+    "street": "nakanoku",
+    "town_city": "tokyo",
+    "county_state": "IN-AN",
+    "postal_zip_code": "1239903",
+    "country": "JP"
+  },
+  "fulfillment": {
+    "shipping_method": "ship_DWy4oG8OM56Jx2"
+  },
+  "payment": {
+    "gateway": "stripe",
+    "stripe": {
+      "payment_method_id": "payment_nn76qv8hqlg"
+    }
+  }
+}
   
   export function getProducts() {
     return products;
@@ -1236,6 +1274,14 @@ let cart = {
   export function addCart(cartData) {
     cart=cartData;
     return cart;
+  }
+
+  export function getShippingData() {
+    return addressFormData;
+  }
+
+  export function getIncomingOrder() {
+    return incomingOrder;
   }
 
   export function removeCart(lineItemId) {

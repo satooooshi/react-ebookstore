@@ -75,15 +75,7 @@ const shipping_options = [
 export function createPaymentMethod() {
   return {
     paymentMethod:{
-      id:'payment_12345'
-    }
-  };
-}
-
-export function getOrderSummary() {
-  return {
-    paymentMethod:{
-      id:'payment_12345'
+      id:'payment_'+Math.random().toString(32).substring(2) // 'a6dpgjqlq8g' 等
     }
   };
 }

@@ -26,9 +26,10 @@ const Checkout = ({ cart, onCaptureCheckout, order, error }) => {
         try {
           //const token = await commerce.checkout.generateToken(cart.id, { type: 'cart' });
           let token = {}
-          //token.live=cart;
-          //token.id='checkouttoken_12345'
-          //token.live.subtotal.formatted_with_symbol=
+          token.id='checkouttoken_12345'
+          token.live=cart;
+          token.shippingData=shippingData;
+          token.live.subtotal.formatted_with_symbol=cart.subtotal.raw+" JPY"
           setCheckoutToken(token);
         } catch {
           if (activeStep !== steps.length) history.push('/');
@@ -38,10 +39,13 @@ const Checkout = ({ cart, onCaptureCheckout, order, error }) => {
     }
   }, [cart]);
 
+
   const test = (data) => {
     console.log(data);
     // set all field in AddressForm including first,lastname
-    setShippingData(data);
+    setShippingData(data)
+    console.log('shipping data')
+    console.log(console.log(JSON.stringify(data, null, 2)))
 
     nextStep();
   };
