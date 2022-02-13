@@ -1098,10 +1098,10 @@ let cart = {
   "created": 1644471299,
   "updated": 1644471616,
   "expires": 1647063616,
-  "total_items": 3,
-  "total_unique_items": 2,
+  "total_items": 0,
+  "total_unique_items": 0,
   "subtotal": {
-    "raw": 257,
+    "raw": 0,
     "formatted": "257.00",
     "formatted_with_symbol": "₹257.00",
     "formatted_with_code": "257.00 INR"
@@ -1216,7 +1216,7 @@ let cart = {
     return products;
   }
 
-  export function getProductsById(productId) {
+  export function getProductById(productId) {
     return products.find(
       product => product.id === productId
     );
@@ -1236,10 +1236,6 @@ let cart = {
   export function addCart(cartData) {
     cart=cartData;
     return cart;
-  }
-
-  export function updateCart(productId, quantity) {
-
   }
 
   export function removeCart(lineItemId) {

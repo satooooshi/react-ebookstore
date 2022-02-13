@@ -14,7 +14,7 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 
 import { Container, Typography, Button, Grid } from '@material-ui/core';
 
-import { getProducts,getProductsById, getCart, addCart } from "./data";
+import { getProducts,getProductById, getCart, addCart } from "./data";
 import { RestaurantMenu } from '@material-ui/icons';
 import { CardDeck } from 'react-bootstrap';
 
@@ -217,8 +217,30 @@ var produooo = {
       setCart(getCart());
     };
 
+    
     const handleAddToCartData = (productId, quantity) => {
 
+      let newCart=JSON.parse(JSON.stringify(getCart()));// deep copy
+      let prod=JSON.parse(JSON.stringify(getProductById(productId)));// deep copy
+      let foundIdx = newCart.line_items.findIndex(item=>item.product_id===productId);
+      if(foundIdx!==-1){ // update line_item quantity in cart
+        newCart.line_items[foundIdx].quantity+=1
+        newCart.line_items[foundIdx].line_total+=prod.price.raw       
+      }else{ // add new line_item to cart
+        prod.product_id=productId
+        prod.quantity=1 // add new key
+        prod.line_total=prod.price.raw
+        newCart.line_items.push(prod)
+        newCart.total_unique_items++
+        
+      }
+      newCart.total_items++
+      newCart.subtotal.raw=newCart.subtotal.raw+prod.price.raw
+      setCart(addCart(JSON.parse(JSON.stringify(newCart))));// deep copy
+      console.log(newCart)
+
+
+      /*
       let cartData = JSON.parse(JSON.stringify(getCart()));
       let lineItemsData=cartData.line_items;
       console.log(lineItemsData);
@@ -257,9 +279,10 @@ var produooo = {
         setCart(addCart(cartData));
         console.log(getCart())
         return ;
-
+        */
     };
   
+    // at least one lineItemId item in cart
     const handleUpdateCartQtyData = (lineItemId, quantity) => {
 
       if(quantity<=0){
@@ -267,55 +290,77 @@ var produooo = {
         return ;
       }
 
-      let cartData = JSON.parse(JSON.stringify(getCart()));
-      let lineItemsData=cartData.line_items;
-      console.log(lineItemsData);
+      let cartData = JSON.parse(JSON.stringify(getCart()))// deep copy
+      let lineItemsData=cartData.line_items; // shallow copy
+      let lineItemData=lineItemsData.find(product => product.id === lineItemId)
+      lineItemData.quantity=quantity;
 
-      // modify quantity
-      if(lineItemsData!==undefined){
-      for(var i = 0; i < lineItemsData.length; i++) {
-        if(lineItemId==lineItemsData[i].id){
-            lineItemsData[i].quantity=quantity;
-            console.log(lineItemsData);
-            cartData.line_items=lineItemsData;
-            setCart(prevCart=>{
-              const newCart=addCart(cartData);
-              return newCart;
-            });
-            console.log(getCart())
-            return ;
+      let total_items=0
+      let total_unique_items=0
+      let subtotalraw=0
+      lineItemsData.forEach((item,idx) => {   
+        if(item.id!==lineItemId){
+          // fall through
+        }else{
+          item.line_total=item.price.raw*item.quantity
         }
-      }
-      }else{
-        // nothing in cart
-      }
+        subtotalraw+=item.line_total
+        console.log(item.line_total)
+        total_items+=item.quantity
+        total_unique_items++
+      })
+      cartData.total_items=total_items
+      cartData.total_unique_items=total_unique_items
+      cartData.subtotal.raw=subtotalraw
+      cartData.line_items=lineItemsData
+      setCart(addCart(cartData))
+      console.log(cartData)
+
     };
 
     const handleRemoveFromCartData = (lineItemId) => {
-      let cartData = JSON.parse(JSON.stringify(getCart()));
+      let cartData = JSON.parse(JSON.stringify(getCart()));// deep copy
       let lineItemsData=cartData.line_items;
-      
-
       lineItemsData = lineItemsData.filter(
-          product => product.id !== lineItemId
-      );
+        product => product.id !== lineItemId
+    );
 
-      cartData.line_items=lineItemsData;
-      console.log(getCart().line_items)
-      const newCart=addCart(cartData)
-      console.log(newCart);
-      setCart(newCart);
+    let total_items=0
+    let total_unique_items=0
+    let subtotalraw=0
+    lineItemsData.forEach((item,idx) => {   
+      if(item.id!==lineItemId){
+        // fall through
+      }else{
+        item.line_total=item.price.raw*item.quantity
+      }
+      subtotalraw+=item.line_total
+      console.log(item.line_total)
+      total_items+=item.quantity
+      total_unique_items++
+    })
+    cartData.total_items=total_items
+    cartData.total_unique_items=total_unique_items
+    cartData.subtotal.raw=subtotalraw
+    cartData.line_items=lineItemsData
+
+      console.log(cartData)
+      setCart(addCart(cartData));
     };
 
     const handleEmptyCartData = () => {
       let cartData = JSON.parse(JSON.stringify(getCart()));
+      cartData.total_items=0
+      cartData.total_unique_items=0
+      cartData.subtotal.raw=0
       cartData.line_items=[];
       setCart(addCart(cartData));
       console.log(addCart(cartData));
     };
   
     const refreshCartData = () => {
-      setCart(getCart());
+      let cartData = JSON.parse(JSON.stringify(getCart()));
+      setCart(cartData);
     };
   
     const handleCaptureCheckoutData = (checkoutTokenId, newOrder) => {
@@ -342,8 +387,7 @@ var produooo = {
       <Router>
         <div style={{ display: 'flex' }}>
           <CssBaseline />
-          {/*<Navbar totalItems={cart.total_items} handleDrawerToggle={handleDrawerToggle} />*/}
-          <Navbar totalItems={5} handleDrawerToggle={handleDrawerToggle} />
+          <Navbar totalItems={cart.total_items} handleDrawerToggle={handleDrawerToggle} />
           <Switch>
             <Route exact path="/">
               <Products products={products} onAddToCart={handleAddToCartData} handleUpdateCartQty />

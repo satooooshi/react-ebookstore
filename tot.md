@@ -227,3 +227,8 @@ json key study
 product
 cart and needed calcuration
 order
+
+
+find undefined
+findIndex -1
+foreach
