@@ -1,8 +1,14 @@
 ---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: mytest
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: reactbookfront
+  namespace: mytest
 spec:
   replicas: 1
   selector:
@@ -17,11 +23,12 @@ spec:
       - name: reactbookfront
         image: superheatedboy/reactbookfront:latest
         imagePullPolicy: IfNotPresent
+        tty: true
         env:
         - name: NODE_OPTIONS
           value: '--openssl-legacy-provider'
         - name: REACT_APP_DEV_API_URL
-          value: 'http://localhost:3050'
+          value: 'http://47.242.83.44:3001'
         - name: REACT_APP_REST_HOST 
           value: 'http://productsapi'
         - name: REACT_APP_REST_PORT
@@ -30,12 +37,13 @@ spec:
           value: 'http://tokenapi:3002'
         ports:
         - containerPort: 3000
-        command: ["npm", "run", "start-client"]
+        #command: ["npm", "run", "start-client"]
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: reactbookfront
+  namespace: mytest
 spec:
   type: NodePort
   selector:
@@ -43,6 +51,7 @@ spec:
   ports:
     - port: 3000
       targetPort: 3000
+      nodePort: 30000
       protocol: TCP
       name: reactbookfront
 ---
@@ -50,6 +59,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: productsapi
+  namespace: mytest
 spec:
   replicas: 1
   selector:
@@ -69,12 +79,13 @@ spec:
         env:
         - name: NODE_OPTIONS
           value: '--openssl-legacy-provider'
-        command: ["npm", "start"]
+        #command: ["npm", "start"]
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: productsapi
+  namespace: mytest
 spec:
   type: NodePort
   selector:
@@ -82,6 +93,7 @@ spec:
   ports:
     - port: 3001
       targetPort: 3001
+      nodePort: 30001
       protocol: TCP
       name: productsapi
 
@@ -90,6 +102,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: tokenapi
+  namespace: mytest
 spec:
   replicas: 1
   selector:
@@ -109,13 +122,14 @@ spec:
         env:
         - name: NODE_OPTIONS
           value: '--openssl-legacy-provider'
-        command: ["node", "server.js"]
+        #command: ["node", "server.js"]
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: tokenapi
+  namespace: mytest
 spec:
   type: NodePort
   selector:
@@ -123,6 +137,7 @@ spec:
   ports:
     - port: 3002
       targetPort: 3002
+      nodePort: 30002
       protocol: TCP
       name: tokenapi
 
@@ -135,6 +150,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: busybox-sleep
+  namespace: mytest
 spec:
   containers:
   - name: busybox
