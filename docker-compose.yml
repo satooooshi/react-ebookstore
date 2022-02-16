@@ -3,17 +3,20 @@ services:
   reactbookfront:
     build:
       context: .
+    image: superheatedboy/reactbookfront:latest
     ports:
       - "3000:3000"
     tty: true # コンテナが正常終了するのを防ぐ
   productsapi:
     build:
       context: ./backend
+    image: superheatedboy/productsapi:latest
     ports:
       - "3001:3001"
   tokenapi:
     build:
       context: ./auth-tutorial
+    image: superheatedboy/tokenapi:latest
     ports:
       - "3002:3002"
 
