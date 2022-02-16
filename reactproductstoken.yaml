@@ -28,7 +28,7 @@ spec:
         - name: NODE_OPTIONS
           value: '--openssl-legacy-provider'
         - name: REACT_APP_DEV_API_URL
-          value: 'http://47.242.83.44:3001'
+          value: 'http://47.242.83.44:31415' #'http://47.242.83.44:3001'
         - name: REACT_APP_REST_HOST 
           value: 'http://productsapi'
         - name: REACT_APP_REST_PORT
