@@ -17,11 +17,12 @@ import { Container, Typography, Button, Grid } from '@material-ui/core';
 import { getProducts,getProductById, getCart, addCart } from "./data";
 import { RestaurantMenu } from '@material-ui/icons';
 import { CardDeck } from 'react-bootstrap';
-
 import Appa from './components/CheckoutForm/App'
-
 import axios from 'axios';
 
+  let API_URL=process.env.REACT_APP_DEV_API_URL
+  //let API_URL='http://localhost:3001'
+  //let API_URL=''
 
   const App = () => {
     const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -227,7 +228,7 @@ import axios from 'axios';
     /*---------------------------------------------------------------- */
 
     const fetchProductsData = () => {
-      axios.get(`http://localhost:3001/api/products`)
+      axios.get(API_URL+`/api/products`)
       .then(res => {
         console.log('axios fetch products')
         console.log(res)
@@ -236,7 +237,7 @@ import axios from 'axios';
     };
 
     const fetchCartData = () => {
-      axios.get(`http://localhost:3001/api/cart`)
+      axios.get(API_URL+`/api/cart`)
       .then(res => {
         console.log('axios fetch cart')
         console.log(res)
@@ -247,7 +248,7 @@ import axios from 'axios';
     
     const handleAddToCartData = (productId, quantity) => {
 
-      axios.get(`http://localhost:3001/api/cart/add/`+productId)
+      axios.get(API_URL+`/api/cart/add/`+productId)
       .then(res => {
         console.log('axios cart add')
         console.log(res)
@@ -259,7 +260,7 @@ import axios from 'axios';
   
     // at least one lineItemId item in cart
     const handleUpdateCartQtyData = (lineItemId, quantity) => {
-      axios.get(`http://localhost:3001/api/cart/update/`+lineItemId+'/'+quantity)
+      axios.get(API_URL+`/api/cart/update/`+lineItemId+'/'+quantity)
       .then(res => {
         console.log('axios cart update')
         console.log(res)
@@ -269,7 +270,7 @@ import axios from 'axios';
     };
 
     const handleRemoveFromCartData = (lineItemId) => {
-      axios.get(`http://localhost:3001/api/cart/remove/`+lineItemId)
+      axios.get(API_URL+`/api/cart/remove/`+lineItemId)
       .then(res => {
         console.log('axios cart remove from cart')
         console.log(res)
@@ -278,7 +279,7 @@ import axios from 'axios';
     };
 
     const handleEmptyCartData = () => {
-      axios.get(`http://localhost:3001/api/cart/empty`)
+      axios.get(API_URL+`/api/cart/empty`)
       .then(res => {
         console.log('axios empty cart')
         console.log(res)

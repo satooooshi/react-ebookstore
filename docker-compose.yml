@@ -1,0 +1,22 @@
+version: '3'
+services:
+  reactbookfront:
+    build:
+      context: .
+    ports:
+      - "3000:3000"
+    tty: true # コンテナが正常終了するのを防ぐ
+  productsapi:
+    build:
+      context: ./backend
+    ports:
+      - "3001:3001"
+  tokenapi:
+    build:
+      context: ./auth-tutorial
+    ports:
+      - "3002:3002"
+
+# docker-compose up --build
+# docker-compose exec reactbookfront sh
+# docker-compose exec reactbookfront curl http://productsapi:3001/api/products

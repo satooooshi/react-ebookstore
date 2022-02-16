@@ -8,6 +8,9 @@ import AddressForm from '../AddressForm';
 import PaymentForm from '../PaymentForm';
 import useStyles from './styles';
 
+import useToken from './useToken';
+import SignIn from './SignIn/Signin'
+
 const steps = ['Shipping address', 'Payment details'];
 
 const Checkout = ({ cart, onCaptureCheckout, order, error }) => {
@@ -50,6 +53,7 @@ const Checkout = ({ cart, onCaptureCheckout, order, error }) => {
     nextStep();
   };
 
+  // このコンポネントはerrorがある場合、後から上書きされる
   let Confirmation = () => (order.customer ? (
     <>
       <div>
@@ -97,7 +101,17 @@ const Checkout = ({ cart, onCaptureCheckout, order, error }) => {
     ? <AddressForm checkoutToken={checkoutToken} nextStep={nextStep} setShippingData={setShippingData} test={test} />
     : <PaymentForm checkoutToken={checkoutToken} nextStep={nextStep} backStep={backStep} shippingData={shippingData} onCaptureCheckout={onCaptureCheckout}/>);
 
+
+  const { token, setToken } = useToken(); // save in localStorage
+  if(!token) {
+    //eturn <Login setToken={setToken} /> 
+    return <SignIn setToken={setToken} />
+  }
+
+
+  // step0 AddressForm, step1 PaymentForm, step3==steps.length Confirmation
   return (
+
     <>
       <CssBaseline />
       <div className={classes.toolbar} />

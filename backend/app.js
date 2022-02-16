@@ -1,8 +1,9 @@
 const express = require('express')
 const cors = require("cors");
-const { RedoTwoTone } = require('@material-ui/icons');
 const app = express()
+const host='0.0.0.0'
 const port = 3001
+
 
 
 let corsOptions = {
@@ -1424,6 +1425,6 @@ app.get('/api/cart/empty', function (req, res) {
 })
 
 
-app.listen(port, () => {
-  console.log(`Backend app listening on port ${port}`)
+app.listen(port,host, () => {
+  console.log(`Backend app listening on ${host}:${port}`)
 })

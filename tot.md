@@ -1,4 +1,22 @@
-function vs. component translation
+react function vs. component translation
+
+
+makeStyles in css and useStyles in component
+cababe ; in css vs. camel , in js 
+react className and style
+ const classes = useStyles();
+ ...
+  <div className={classes.cardDetails}>
+
+use mutation in setState()
+
+flex container 
+  cardDetails: {
+    display: 'flex',
+    marginTop: '7%',
+    width: '100%',
+    justifyContent: 'space-between',
+  },
 
 https://www.asobou.co.jp/blog/web/css-selectors#3class
 HTMLタグを指定
@@ -232,3 +250,24 @@ order
 find undefined
 findIndex -1
 foreach
+
+
+input type onChange, e.target.value
+<input type="text" onChange={e => setUserName(e.target.value)}/>
+
+
+
+form onSubmit, input onChange, and button type submit
+      <form onSubmit={handleSubmit}>
+        <label>
+          <p>Username</p>
+          <input type="text" onChange={e => setUserName(e.target.value)}/>
+        </label>
+        <label>
+          <p>Password</p>
+          <input type="password" onChange={e => setPassword(e.target.value)}/>
+        </label>
+        <div>
+          <button type="submit">Submit</button>
+        </div>
+      </form>

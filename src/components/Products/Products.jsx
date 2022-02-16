@@ -80,7 +80,7 @@ const Products = ({ products, onAddToCart }) => {
         />
       </div>
 
-      <Grid className={classes.content} container justify="center" spacing={5}>
+      <Grid className={classes.content} container justify="center" spacing={5} >
         {products
           .filter((product) => {
             if (searchTerm === "") {
