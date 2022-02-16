@@ -17,6 +17,16 @@ services:
     ports:
       - "3002:3002"
 
+  nginx:
+    depends_on:
+      - productsapi
+      - reactbookfront
+    restart: always
+    build:
+      context: ./nginxrp
+    ports:
+      - "3050:80"
+
 # docker-compose up --build
 # docker-compose exec reactbookfront sh
 # docker-compose exec reactbookfront curl http://productsapi:3001/api/products

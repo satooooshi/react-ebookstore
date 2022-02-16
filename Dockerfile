@@ -6,7 +6,9 @@ COPY . .
 EXPOSE 3000
 # CMD ["sleep", "3600"]
 # this API is finally updated rather than in .env rather than in package.json proxy
-ENV REACT_APP_DEV_API_URL=http://productsapi:3001
+# ENV REACT_APP_DEV_API_URL=http://productsapi:3001
+# axios should use nginx reserse proxy
+ENV REACT_APP_DEV_API_URL=http://localhost:3050
 # hit an ERR_OSSL_EVP_UNSUPPORTED error
 ENV NODE_OPTIONS=--openssl-legacy-provider
 # development mode
