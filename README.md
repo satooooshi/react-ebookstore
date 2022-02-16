@@ -7,11 +7,16 @@
     later can add to the shopping cart and finally purchase using credit card transaction.
 
 # How to Run
+### `docker-compose up --build`  
+# Develop each microservice  
 ### `REACT_APP_DEV_API_URL=http://localhost:3001 npm run start-client`
 Runs the app in the development mode.<br>
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 ### `npm test`
 ### `npm run build`
+
+
+
 
 
 express server
@@ -21,3 +26,4 @@ npm start
 local Data ver
 Express axios ver
 stripeJs & commerceJs ver
+
