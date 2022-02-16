@@ -8,7 +8,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: reactbookfront
-  namespace: mytest
+  namespace: default
 spec:
   replicas: 1
   selector:
@@ -43,7 +43,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: reactbookfront
-  namespace: mytest
+  namespace: default
 spec:
   type: NodePort
   selector:
@@ -59,7 +59,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: productsapi
-  namespace: mytest
+  namespace: default
 spec:
   replicas: 1
   selector:
@@ -85,7 +85,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: productsapi
-  namespace: mytest
+  namespace: default
 spec:
   type: NodePort
   selector:
@@ -102,7 +102,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: tokenapi
-  namespace: mytest
+  namespace: default
 spec:
   replicas: 1
   selector:
@@ -129,7 +129,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: tokenapi
-  namespace: mytest
+  namespace: default
 spec:
   type: NodePort
   selector:
@@ -150,7 +150,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: busybox-sleep
-  namespace: mytest
+  namespace: default
 spec:
   containers:
   - name: busybox
