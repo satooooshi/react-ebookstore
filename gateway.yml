@@ -7,7 +7,7 @@ spec:
     istio: ingressgateway # use istio default controller
   servers:
   - port:
-      number: 80 # use istio default controller's container port, NOT arbitrary
+      number: 80 # in order to start a listener on the istio-ingressgateway on port 80 , NOT arbitrary
       name: http
       protocol: HTTP
     hosts:
